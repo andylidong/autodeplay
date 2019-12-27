@@ -272,7 +272,7 @@ function stopProgress(sshCon, fileName, notEnd) {
 
 
   console.log('----上传文件成功，开始解压文件----');
-  let unZipRes = await sshCon.execSsh(`unzip -o ${Config.catalog + '/' + fileName} -d ${Config.catalog} & rm -rf ${Config.catalog + '/' + fileName}`).catch((e)=>{
+  let unZipRes = await sshCon.execSsh(`unzip -o ${Config.catalog + '/' + fileName} -d ${Config.catalog}`).catch((e)=>{
     console.error(e);
   });
   if (!unZipRes || !unZipRes.success) {
