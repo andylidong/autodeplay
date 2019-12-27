@@ -2,7 +2,7 @@ const Config = {
   host: '111.229.53.186', // 服务器ip地址或域名
   port: 22, // 服务器ssh连接端口号
   username: 'root', // ssh登录用户
-  password: '!Qaz2wsx', // 密码
+  password: '', // 密码
   privateKey: null, // 私钥，私钥与密码二选一
   // privateKey: fs.readFileSync('myKey.key'),
   catalog: '/root/public', // 前端文件压缩目录
