@@ -3,7 +3,7 @@ language: node_js
 
 # 使用的nodejs版本
 node_js:
-  - v6.10.2
+  - v8.17.0
 
 # 执行的脚本
 script:
