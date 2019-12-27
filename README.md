@@ -1,68 +1,36 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Available Scripts
+  just a demo to test auto deploy.
 
-In the project directory, you can run:
+### 云服务器
+  1、在服务器上面配置nginx，设置location
 
-### `yarn start`
+### 创建一个项目，并推送到github上面
+  1、利用create-react-app创建一个项目
+  2、本地测试完成之后推送到github上面  
+  
+### 了解一下Travis，https://travis-ci.com/
+  1、登录官网了解基本的配置信息
+  2、在项目中添加一个.travis.yml的文件
+  3、在配置文件中添加自己的配置信息
+      # 使用的语言
+      language: node_js
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+      # 使用的nodejs版本
+      node_js:
+        - v8.17.0
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+      # 执行的脚本
+      script:
+        - npm run deploy
 
-### `yarn test`
+      # 仓库的分支
+      branches:
+        only:
+          - master
+### 登录到Travis，授权可以获取github的repositories
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### 测试
+    1、在本地修改完毕之后，推送到github上面
+    2、在Travis上面可以查看自己的repositories，可以获取log
+    3、在云服务器上面可以查看到自己的build文件（需要执行yarn run deploy,在Travis的配置上面已经执行了）
+    4、可以查看到具体的页面 http://111.229.53.186/（Demo页面）

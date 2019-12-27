@@ -18,13 +18,8 @@ const archiver = require('archiver');
 const fs = require('fs');
 const Client = require("ssh2").Client;
 
-
-// 前端打包文件的目录
-const dir = path.resolve(__dirname, Config.buildDist);
-
-
 class SSH {
-  constructor ({ host, port, username, password, privateKey }) {
+  constructor({ host, port, username, password, privateKey }) {
     this.server = {
       host, port, username, password, privateKey
     };
@@ -32,36 +27,36 @@ class SSH {
   }
 
   // 连接服务器
-  connectServer () {
+  connectServer() {
     return new Promise((resolve, reject) => {
-      this.conn.on("ready", ()=>{
+      this.conn.on("ready", () => {
         resolve({
           success: true
         });
-      }).on('error', (err)=>{
+      }).on('error', (err) => {
         reject({
           success: false,
           error: err
         });
-      }).on('end', ()=> {
+      }).on('end', () => {
         console.log("----connect end----");
-      }).on('close', (had_error)=>{
+      }).on('close', (had_error) => {
         console.log("----connect close----");
       }).connect(this.server);
     })
   }
 
   // 上传文件
-  uploadFile ({ localPath, remotePath }) {
+  uploadFile({ localPath, remotePath }) {
     return new Promise((resolve, reject) => {
-      return this.conn.sftp((err, sftp)=>{
+      return this.conn.sftp((err, sftp) => {
         if (err) {
           reject({
             success: false,
             error: err
           });
-        } else{
-          sftp.fastPut(localPath, remotePath, (err, result)=>{
+        } else {
+          sftp.fastPut(localPath, remotePath, (err, result) => {
             if (err) {
               reject({
                 success: false,
@@ -79,9 +74,9 @@ class SSH {
   }
 
   // 执行ssh命令
-  execSsh (command) {
+  execSsh(command) {
     return new Promise((resolve, reject) => {
-      return this.conn.exec(command, (err, stream)=>{
+      return this.conn.exec(command, (err, stream) => {
         if (err || !stream) {
           reject({
             success: false, error: err
@@ -103,16 +98,16 @@ class SSH {
   }
 
   // 结束连接
-  endConn () {
+  endConn() {
     this.conn.end();
     console.log('----SSH连接已关闭----');
   }
 
   // 删除本地文件
-  deleteLocalFile (filePathName) {
+  deleteLocalFile(filePathName) {
     return new Promise((resolve, reject) => {
-      fs.unlink(filePathName, function(error){
-        if(error){
+      fs.unlink(filePathName, function (error) {
+        if (error) {
           reject({
             success: false,
             error
@@ -135,7 +130,7 @@ class SSH {
         zlib: { level: 9 } // 设置压缩级别
       });
       // 文件输出流结束
-      output.on('close', function() {
+      output.on('close', function () {
         console.log(`----压缩文件总共 ${archive.pointer()} 字节----`);
         console.log('----压缩文件夹完毕----');
         resolve({
@@ -143,12 +138,12 @@ class SSH {
         })
       });
       // 数据源是否耗尽
-      output.on('end', function() {
+      output.on('end', function () {
         console.error('----压缩失败，数据源已耗尽----');
         reject({ success: false });
       });
       // 存档警告
-      archive.on('warning', function(err) {
+      archive.on('warning', function (err) {
         if (err.code === 'ENOENT') {
           console.error('----stat故障和其他非阻塞错误----')
         } else {
@@ -157,7 +152,7 @@ class SSH {
         reject({ success: false, error: err });
       });
       // 存档出错
-      archive.on('error', function(err) {
+      archive.on('error', function (err) {
         console.error('----存档错误，压缩失败----');
         console.error(err);
         reject({ success: false, error: err });
@@ -174,7 +169,7 @@ class SSH {
   }
 
   // 打包本地前端文件
-  buildProject () {
+  buildProject() {
     console.log('----开始编译打包文件，请耐心等待----');
     return new Promise((resolve, reject) => {
       exec(Config.buildCommand, async (error, stdout, stderr) => {
@@ -207,22 +202,22 @@ function stopProgress(sshCon, fileName, notEnd) {
     // ssh未连接成功时无需停止ssh连接
     sshCon.endConn();
   }
-  sshCon.deleteLocalFile(Config.scriptsLocation + fileName).then(()=>{
+  sshCon.deleteLocalFile(Config.scriptsLocation + fileName).then(() => {
     console.log('----已删除本地压缩包文件----');
-  }).catch((e)=>{
+  }).catch((e) => {
     console.error('----删除本地文件失败，请手动删除----');
     console.error(e);
   });
 }
 
 // 执行前端部署
-(async ()=> {
+(async () => {
   // 定义操作对象
   let sshCon = new SSH(Config);
 
 
   // 打包文件
-  let buildRes = await sshCon.buildProject().catch(e=>{
+  let buildRes = await sshCon.buildProject().catch(e => {
     console.error(e);
   });
   if (!buildRes || !buildRes.success) {
@@ -241,13 +236,13 @@ function stopProgress(sshCon, fileName, notEnd) {
   let day = date.getDate();
 
   let timeStr = `${year}_${month}_${day}`;
-  const fileName = `${Config.buildDist}-`+ timeStr + '-' + Math.random().toString(16).slice(2) + '.zip';
-  let res = await sshCon.zipFile(fileName, `${Config.buildDist}/`).catch(()=>{});
+  const fileName = `${Config.buildDist}-` + timeStr + '-' + Math.random().toString(16).slice(2) + '.zip';
+  let res = await sshCon.zipFile(fileName, `${Config.buildDist}/`).catch(() => { });
   if (!res || !res.success) return false;
 
 
   console.log('----开始进行SSH连接----');
-  let sshRes = await sshCon.connectServer().catch(e=>{
+  let sshRes = await sshCon.connectServer().catch(e => {
     console.error(e);
   });
   if (!sshRes || !sshRes.success) {
@@ -261,7 +256,7 @@ function stopProgress(sshCon, fileName, notEnd) {
   let uploadRes = await sshCon.uploadFile({
     localPath: path.resolve(__dirname, fileName),
     remotePath: Config.catalog + '/' + fileName
-  }).catch(e=>{
+  }).catch(e => {
     console.error(e);
   });
   if (!uploadRes || !uploadRes.success) {
@@ -272,7 +267,7 @@ function stopProgress(sshCon, fileName, notEnd) {
 
 
   console.log('----上传文件成功，开始解压文件----');
-  let unZipRes = await sshCon.execSsh(`unzip -o ${Config.catalog + '/' + fileName} -d ${Config.catalog}`).catch((e)=>{
+  let unZipRes = await sshCon.execSsh(`unzip -o ${Config.catalog + '/' + fileName} -d ${Config.catalog} && rm -rf ${Config.catalog + '/' + fileName}`).catch((e) => {
     console.error(e);
   });
   if (!unZipRes || !unZipRes.success) {
@@ -280,7 +275,6 @@ function stopProgress(sshCon, fileName, notEnd) {
     stopProgress(sshCon, fileName);
     return false;
   }
-
 
   console.log('----操作成功，正在为您删除本地文件----');
   stopProgress(sshCon, fileName);
