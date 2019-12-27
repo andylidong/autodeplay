@@ -1,4 +1,15 @@
-language: ruby
-rvm:
-  - 2.2
-  - jruby
+# 使用的语言
+language: node_js
+
+# 使用的nodejs版本
+node_js:
+  - v6.10.2
+
+# 执行的脚本
+script:
+  - npm run deploy
+
+# 仓库的分支
+branches:
+  only:
+    - master
