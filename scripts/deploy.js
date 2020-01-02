@@ -213,7 +213,15 @@ function stopProgress(sshCon, fileName, notEnd) {
 // 执行前端部署
 (async () => {
   // 定义操作对象
-  let sshCon = new SSH(Config);
+  const [host, port, username, password, privateKey] = process.argv.splice(2);
+  const config = Config;
+  config.host = host;
+  config.port = port;
+  config.username = username;
+  config.password = password;
+  config.privateKey = privateKey;
+  console.log("Config = " + JSON.stringify(config));
+  let sshCon = new SSH(config);
 
 
   // 打包文件
