@@ -214,13 +214,14 @@ function stopProgress(sshCon, fileName, notEnd) {
 (async () => {
   // 定义操作对象
   const [host, port, username, password, privateKey, catalog] = process.argv.splice(2);
+  console.log("catalog = " + catalog);
   const config = Config;
   config.host = host;
   config.port = port;
   config.username = username;
   config.password = password;
   config.privateKey = privateKey;
-  config.catalog = catalog;
+  // config.catalog = catalog;
   console.log("Config = " + JSON.stringify(config));
   let sshCon = new SSH(config);
 
