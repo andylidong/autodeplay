@@ -5,7 +5,7 @@ const Config = {
   password: '', // 密码
   privateKey: null, // 私钥，私钥与密码二选一
   // privateKey: fs.readFileSync('myKey.key'),
-  catalog: '/root/public', // 前端文件压缩目录
+  catalog: '/root/deploy/github', // 前端文件压缩目录
   buildDist: 'build', // 前端文件打包之后的目录，默认dist
   scriptsLocation: './scripts/', // 前端文件打包之后的目录，默认dist
   buildCommand: 'npm run build', // 打包前端文件的命令
@@ -213,13 +213,14 @@ function stopProgress(sshCon, fileName, notEnd) {
 // 执行前端部署
 (async () => {
   // 定义操作对象
-  const [host, port, username, password, privateKey] = process.argv.splice(2);
+  const [host, port, username, password, privateKey, catalog] = process.argv.splice(2);
   const config = Config;
   config.host = host;
   config.port = port;
   config.username = username;
   config.password = password;
   config.privateKey = privateKey;
+  config.catalog = catalog;
   console.log("Config = " + JSON.stringify(config));
   let sshCon = new SSH(config);
 

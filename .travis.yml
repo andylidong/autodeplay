@@ -7,7 +7,7 @@ node_js:
 
 # 执行的脚本
 script:
-  - npm run deploy ${P_HOST} ${P_PORT} ${P_USERNAME} ${P_PASSWORD} ${P_PRIVATEKEY}
+  - npm run deploy ${P_HOST} ${P_PORT} ${P_USERNAME} ${P_PASSWORD} ${P_PRIVATEKEY} ${P_CATALOG}
 
 # 仓库的分支
 branches:
