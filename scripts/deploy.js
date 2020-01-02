@@ -1,11 +1,11 @@
 const Config = {
-  host: '111.229.53.186', // 服务器ip地址或域名
+  host: '', // 服务器ip地址或域名
   port: 22, // 服务器ssh连接端口号
-  username: 'root', // ssh登录用户
-  password: '!Qaz2wsx', // 密码
+  username: '', // ssh登录用户
+  password: '', // 密码
   privateKey: null, // 私钥，私钥与密码二选一
   // privateKey: fs.readFileSync('myKey.key'),
-  catalog: '/root/deploy/github', // 前端文件压缩目录
+  catalog: '', // 前端文件压缩目录
   buildDist: 'build', // 前端文件打包之后的目录，默认dist
   scriptsLocation: './scripts/', // 前端文件打包之后的目录，默认dist
   buildCommand: 'npm run build', // 打包前端文件的命令
