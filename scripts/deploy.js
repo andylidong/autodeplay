@@ -2,7 +2,7 @@ const Config = {
   host: '111.229.53.186', // 服务器ip地址或域名
   port: 22, // 服务器ssh连接端口号
   username: 'root', // ssh登录用户
-  password: '', // 密码
+  password: '!Qaz2wsx', // 密码
   privateKey: null, // 私钥，私钥与密码二选一
   // privateKey: fs.readFileSync('myKey.key'),
   catalog: '/root/deploy/github', // 前端文件压缩目录
@@ -21,7 +21,7 @@ const Client = require("ssh2").Client;
 class SSH {
   constructor({ host, port, username, password, privateKey }) {
     this.server = {
-      host, port, username, password, privateKey
+      host, port, username, password, privateKey, tryKeyboard: true
     };
     this.conn = new Client();
   }
@@ -38,6 +38,10 @@ class SSH {
           success: false,
           error: err
         });
+      }).on('keyboard-interactive', function (name, instructions, instructionsLang, prompts, finish) {
+        console.log('Connection :: keyboard-interactive');
+        console.log('this.conn.connection.password: ', this.conn.connection.password);
+        finish([this.conn.connection.password]);
       }).on('end', () => {
         console.log("----connect end----");
       }).on('close', (had_error) => {
@@ -226,7 +230,7 @@ function stopProgress(sshCon, fileName, notEnd) {
   config.username = username;
   config.password = password;
   config.privateKey = privateKey;
-  // config.catalog = catalog;
+  config.catalog = catalog;
   console.log("Config = " + JSON.stringify(config));
   let sshCon = new SSH(config);
 
