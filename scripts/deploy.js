@@ -7,7 +7,7 @@ const Config = {
   // privateKey: fs.readFileSync('myKey.key'),
   catalog: '', // 前端文件压缩目录
   buildDist: 'build', // 前端文件打包之后的目录，默认dist
-  scriptsLocation: './scripts/', // 前端文件打包之后的目录，默认dist
+  scriptsLocation: './scripts/', // 前端的脚本，默认scripts
   buildCommand: 'npm run build', // 打包前端文件的命令
   readyTimeout: 60000 // ssh连接超时时间
 };
